@@ -3568,9 +3568,9 @@
     "rotX": 0,
     "rotY": 180,
     "rotZ": 0,
-    "scaleX": 7.4,
+    "scaleX": 9.62,
     "scaleY": 1,
-    "scaleZ": 11.1
+    "scaleZ": 14.43
    },
    "Nickname": "Map of ARK-9",
    "Description": "",
@@ -3613,9 +3613,9 @@
     "rotX": 0,
     "rotY": 180,
     "rotZ": 0,
-    "scaleX": 4.5,
+    "scaleX": 6.75,
     "scaleY": 1,
-    "scaleZ": 4.5
+    "scaleZ": 6.75
    },
    "Nickname": "Game Disc (Alert)",
    "Description": "",
@@ -3658,9 +3658,9 @@
     "rotX": 0,
     "rotY": 180,
     "rotZ": 0,
-    "scaleX": 1.8,
+    "scaleX": 2.7,
     "scaleY": 1,
-    "scaleZ": 1.8
+    "scaleZ": 2.7
    },
    "Nickname": "Alert Spinner",
    "Description": "",
@@ -3697,15 +3697,15 @@
    "GUID": "a00062",
    "Name": "DeckCustom",
    "Transform": {
-    "posX": 16,
+    "posX": 19.5,
     "posY": 1.5,
     "posZ": 4,
     "rotX": 0,
     "rotY": 180,
     "rotZ": 180,
-    "scaleX": 1.5,
+    "scaleX": 2.1,
     "scaleY": 1,
-    "scaleZ": 1.5
+    "scaleZ": 2.1
    },
    "Nickname": "MemoryCards",
    "Description": "",
@@ -5265,13 +5265,13 @@
    "Transform": {
     "posX": -46.8,
     "posY": 1.2,
-    "posZ": -13,
+    "posZ": -17,
     "rotX": 0,
     "rotY": 180,
     "rotZ": 0,
-    "scaleX": 2.4,
+    "scaleX": 3.84,
     "scaleY": 1,
-    "scaleZ": 2.4
+    "scaleZ": 3.84
    },
    "Nickname": "SSM Rulebook (GM)",
    "Description": "",
@@ -5308,9 +5308,9 @@
     "rotX": 0,
     "rotY": 180,
     "rotZ": 0,
-    "scaleX": 2.4,
+    "scaleX": 3.84,
     "scaleY": 1,
-    "scaleZ": 2.4
+    "scaleZ": 3.84
    },
    "Nickname": "Secret Files (GM)",
    "Description": "",
@@ -5343,13 +5343,13 @@
    "Transform": {
     "posX": -46.8,
     "posY": 1.2,
-    "posZ": 13,
+    "posZ": 17,
     "rotX": 0,
     "rotY": 180,
     "rotZ": 0,
-    "scaleX": 2.4,
+    "scaleX": 3.84,
     "scaleY": 1,
-    "scaleZ": 2.4
+    "scaleZ": 3.84
    },
    "Nickname": "MemoryCore Manual",
    "Description": "",

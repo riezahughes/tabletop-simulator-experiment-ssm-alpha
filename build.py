@@ -136,21 +136,21 @@ for i in range(5):  # boards, double-sided
     objs.append(tile(img(f"board{i+1}_front.png"), img(f"board{i+1}_back.png"), 41.3+12*(i % 2), Y+0.2, -10+10*(i//2), (4.7, 4.7),
                      Nickname=f"Character Board {i+1}"))
 objs.append(tile(img("gm_plate.png"), None, 53.3, Y+0.2, 10, (4.7, 4.7), Nickname="GM Plate"))
-objs.append(tile(img("map.png"), None, -14, Y, 1.5, (7.4, 11.1), Nickname="Map of ARK-9"))
-objs.append(tile(img("disc.png"), img("disc_back.png"), 6, Y, 4, (4.5, 4.5), typ=2, guid="d15c01", Locked=True,
+objs.append(tile(img("map.png"), None, -14, Y, 1.5, (9.62, 14.43), Nickname="Map of ARK-9"))
+objs.append(tile(img("disc.png"), img("disc_back.png"), 6, Y, 4, (6.75, 6.75), typ=2, guid="d15c01", Locked=True,
                  Nickname="Game Disc (Alert)"))
-objs.append(base("Custom_Token", 6, Y+0.2, 4, scale=(1.8, 1, 1.8), guid="ae3d01", Locked=True, Nickname="Alert Spinner",
+objs.append(base("Custom_Token", 6, Y+0.2, 4, scale=(2.7, 1, 2.7), guid="ae3d01", Locked=True, Nickname="Alert Spinner",
                  CustomImage={"ImageURL": img("needle.png"), "ImageSecondaryURL": "", "ImageScalar": 1.0, "WidthScale": 0.0,
                               "CustomToken": {"Thickness": 0.05, "MergeDistancePixels": 15.0, "StandUp": False, "Stackable": False}}))
 cd = {"1": {"FaceURL": img("memorycards_sheet.png"), "BackURL": img("card_back.png"), "NumWidth": COLS,
             "NumHeight": ROWS, "BackIsHidden": True, "UniqueBack": False, "Type": 0}}
-deck = base("DeckCustom", 16, 1.5, 4, rot=(0, 180, 180), scale=(1.5, 1, 1.5), Nickname="MemoryCards", CustomDeck=cd,
+deck = base("DeckCustom", 19.5, 1.5, 4, rot=(0, 180, 180), scale=(2.1, 1, 2.1), Nickname="MemoryCards", CustomDeck=cd,
             DeckIDs=[100+i for i in range(N)])
 deck["ContainedObjects"] = [dict(base("CardCustom", 0, 0, 0, rot=(0, 180, 180)), CardID=100+i, CustomDeck=cd) for i in range(N)]
 objs.append(deck)
-for n, f, x in [("SSM Rulebook (GM)", "ssm_rulebook", -13), ("Secret Files (GM)", "ssm_secret_files", 0),
-                ("MemoryCore Manual", "memorycore_manual", 13)]:
-    objs.append(base("Custom_PDF", -46.8, Y+0.2, x, scale=(2.4, 1, 2.4), Nickname=n,
+for n, f, x in [("SSM Rulebook (GM)", "ssm_rulebook", -17), ("Secret Files (GM)", "ssm_secret_files", 0),
+                ("MemoryCore Manual", "memorycore_manual", 17)]:
+    objs.append(base("Custom_PDF", -46.8, Y+0.2, x, scale=(3.84, 1, 3.84), Nickname=n,
                      CustomPDF={"PDFUrl": pdf(f), "PDFPassword": "", "PDFPage": 0, "PDFPageOffset": 0}))
 
 for k, nm in (("ration", "Ration"), ("diazepam", "Diazepam"), ("medicine", "Medicine")):
