@@ -1,0 +1,5620 @@
+{
+ "SaveName": "Solid State Machine",
+ "GameMode": "Solid State Machine (MemoryCore)",
+ "VersionNumber": "v14.2.2",
+ "Gravity": 0.5,
+ "PlayArea": 0.5,
+ "Table": "Table_RPG",
+ "Sky": "Sky_Regal",
+ "SkyURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_background.png",
+ "Note": "",
+ "Tags": [
+  "RPG"
+ ],
+ "PlayerCounts": [
+  1,
+  6
+ ],
+ "Hands": {
+  "Enable": true,
+  "DisableUnused": false,
+  "Hiding": 0
+ },
+ "LuaScript": "SNAPS = {{position = {-20, 1.1, 27.5}, rotation = {0, 0, 0}, rotation_snap = true}, {position = {0, 1.1, 27.5}, rotation = {0, 0, 0}, rotation_snap = true}, {position = {20, 1.1, 27.5}, rotation = {0, 0, 0}, rotation_snap = true}, {position = {-20, 1.1, -27.5}, rotation = {0, 180, 0}, rotation_snap = true}, {position = {0, 1.1, -27.5}, rotation = {0, 180, 0}, rotation_snap = true}, {position = {20, 1.1, -27.5}, rotation = {0, 180, 0}, rotation_snap = true}}\n-- Alert spinner. Disc: 4 sectors on the right half, 45 deg each, clockwise from top:\n-- Patrol, Wary, Lockdown, Combat. Left half is the logo: no sector, spin again.\nlocal SECTORS = {\"PATROL\", \"WARY\", \"LOCKDOWN\", \"COMBAT\"}\nlocal spinning = false\n\nfunction onLoad()\n  if SNAPS then Global.setSnapPoints(SNAPS) end\n  local disc = getObjectFromGUID(\"d15c01\")\n  disc.createButton({click_function = \"spin\", function_owner = Global, label = \"SPIN\",\n    position = {0, 0.2, 1.7}, width = 700, height = 300, font_size = 200, tooltip = \"Spin the Alert disc\"})\nend\n\nfunction spin()\n  if spinning then return end\n  spinning = true\n  startLuaCoroutine(Global, \"spinRoutine\")\nend\n\nfunction spinRoutine()\n  local n = getObjectFromGUID(\"ae3d01\")\n  local v = 12 + math.random() * 10\n  local a = n.getRotation().y\n  while v > 0.15 do\n    a = (a + v) % 360\n    n.setRotation({0, a, 0})\n    v = v * 0.985\n    coroutine.yield(0)\n  end\n  spinning = false\n  local res = SECTORS[math.floor(((a - 180) % 360) / 45) + 1]\n  broadcastToAll(res and (\"ALERT: \" .. res) or \"Logo side: no result, spin again\", {1, 1, 0})\n  return 1\nend\n\n",
+ "LuaScriptState": "",
+ "XmlUI": "",
+ "ObjectStates": [
+  {
+   "GUID": "a00001",
+   "Name": "HandTrigger",
+   "Transform": {
+    "posX": -20,
+    "posY": 3.3,
+    "posZ": 21,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 10.3,
+    "scaleY": 6.6,
+    "scaleZ": 4.9
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "FogColor": "White"
+  },
+  {
+   "GUID": "a00002",
+   "Name": "Die_4",
+   "Transform": {
+    "posX": -24.0,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00003",
+   "Name": "Die_6",
+   "Transform": {
+    "posX": -22.4,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00004",
+   "Name": "Die_8",
+   "Transform": {
+    "posX": -20.8,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00005",
+   "Name": "Die_10",
+   "Transform": {
+    "posX": -19.2,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00006",
+   "Name": "Die_12",
+   "Transform": {
+    "posX": -17.6,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00007",
+   "Name": "Die_20",
+   "Transform": {
+    "posX": -16.0,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00008",
+   "Name": "HandTrigger",
+   "Transform": {
+    "posX": 0,
+    "posY": 3.3,
+    "posZ": 21,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 10.3,
+    "scaleY": 6.6,
+    "scaleZ": 4.9
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "FogColor": "Red"
+  },
+  {
+   "GUID": "a00009",
+   "Name": "Die_4",
+   "Transform": {
+    "posX": -4.0,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0000a",
+   "Name": "Die_6",
+   "Transform": {
+    "posX": -2.4000000000000004,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0000b",
+   "Name": "Die_8",
+   "Transform": {
+    "posX": -0.8,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0000c",
+   "Name": "Die_10",
+   "Transform": {
+    "posX": 0.8,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0000d",
+   "Name": "Die_12",
+   "Transform": {
+    "posX": 2.4000000000000004,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0000e",
+   "Name": "Die_20",
+   "Transform": {
+    "posX": 4.0,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0000f",
+   "Name": "HandTrigger",
+   "Transform": {
+    "posX": 20,
+    "posY": 3.3,
+    "posZ": 21,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 10.3,
+    "scaleY": 6.6,
+    "scaleZ": 4.9
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "FogColor": "Yellow"
+  },
+  {
+   "GUID": "a00010",
+   "Name": "Die_4",
+   "Transform": {
+    "posX": 16.0,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00011",
+   "Name": "Die_6",
+   "Transform": {
+    "posX": 17.6,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00012",
+   "Name": "Die_8",
+   "Transform": {
+    "posX": 19.2,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00013",
+   "Name": "Die_10",
+   "Transform": {
+    "posX": 20.8,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00014",
+   "Name": "Die_12",
+   "Transform": {
+    "posX": 22.4,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00015",
+   "Name": "Die_20",
+   "Transform": {
+    "posX": 24.0,
+    "posY": 2,
+    "posZ": 16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00016",
+   "Name": "HandTrigger",
+   "Transform": {
+    "posX": -20,
+    "posY": 3.3,
+    "posZ": -21,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 10.3,
+    "scaleY": 6.6,
+    "scaleZ": 4.9
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "FogColor": "Green"
+  },
+  {
+   "GUID": "a00017",
+   "Name": "Die_4",
+   "Transform": {
+    "posX": -16.0,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00018",
+   "Name": "Die_6",
+   "Transform": {
+    "posX": -17.6,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00019",
+   "Name": "Die_8",
+   "Transform": {
+    "posX": -19.2,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0001a",
+   "Name": "Die_10",
+   "Transform": {
+    "posX": -20.8,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0001b",
+   "Name": "Die_12",
+   "Transform": {
+    "posX": -22.4,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0001c",
+   "Name": "Die_20",
+   "Transform": {
+    "posX": -24.0,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0001d",
+   "Name": "HandTrigger",
+   "Transform": {
+    "posX": 0,
+    "posY": 3.3,
+    "posZ": -21,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 10.3,
+    "scaleY": 6.6,
+    "scaleZ": 4.9
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "FogColor": "Blue"
+  },
+  {
+   "GUID": "a0001e",
+   "Name": "Die_4",
+   "Transform": {
+    "posX": 4.0,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0001f",
+   "Name": "Die_6",
+   "Transform": {
+    "posX": 2.4000000000000004,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00020",
+   "Name": "Die_8",
+   "Transform": {
+    "posX": 0.8,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00021",
+   "Name": "Die_10",
+   "Transform": {
+    "posX": -0.8,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00022",
+   "Name": "Die_12",
+   "Transform": {
+    "posX": -2.4000000000000004,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00023",
+   "Name": "Die_20",
+   "Transform": {
+    "posX": -4.0,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00024",
+   "Name": "HandTrigger",
+   "Transform": {
+    "posX": 20,
+    "posY": 3.3,
+    "posZ": -21,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 10.3,
+    "scaleY": 6.6,
+    "scaleZ": 4.9
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "FogColor": "Pink"
+  },
+  {
+   "GUID": "a00025",
+   "Name": "Die_4",
+   "Transform": {
+    "posX": 24.0,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00026",
+   "Name": "Die_6",
+   "Transform": {
+    "posX": 22.4,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00027",
+   "Name": "Die_8",
+   "Transform": {
+    "posX": 20.8,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00028",
+   "Name": "Die_10",
+   "Transform": {
+    "posX": 19.2,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a00029",
+   "Name": "Die_12",
+   "Transform": {
+    "posX": 17.6,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0002a",
+   "Name": "Die_20",
+   "Transform": {
+    "posX": 16.0,
+    "posY": 2,
+    "posZ": -16,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": ""
+  },
+  {
+   "GUID": "a0002b",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -20,
+    "posY": 1.03,
+    "posZ": 27.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 5,
+    "scaleY": 1,
+    "scaleZ": 5
+   },
+   "Nickname": "White board zone",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_white.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_white.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0002c",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -13,
+    "posY": 1.03,
+    "posZ": 26.9,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "White Life label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_white.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_white.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0002d",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -13,
+    "posY": 1.5,
+    "posZ": 25.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "White Life",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a0002e",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -13,
+    "posY": 1.03,
+    "posZ": 30.4,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "White Focus label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_white.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_white.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0002f",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -13,
+    "posY": 1.5,
+    "posZ": 29.0,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "White Focus",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a00030",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -27.5,
+    "posY": 1.03,
+    "posZ": 26.9,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "White Level label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_white.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_white.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00031",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -27.5,
+    "posY": 1.5,
+    "posZ": 25.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "White Level",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 1
+  },
+  {
+   "GUID": "a00032",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 0,
+    "posY": 1.03,
+    "posZ": 27.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 5,
+    "scaleY": 1,
+    "scaleZ": 5
+   },
+   "Nickname": "Red board zone",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_red.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_red.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00033",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 7,
+    "posY": 1.03,
+    "posZ": 26.9,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Red Life label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_red.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_red.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00034",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 7,
+    "posY": 1.5,
+    "posZ": 25.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Red Life",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a00035",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 7,
+    "posY": 1.03,
+    "posZ": 30.4,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Red Focus label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_red.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_red.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00036",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 7,
+    "posY": 1.5,
+    "posZ": 29.0,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Red Focus",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a00037",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -7.5,
+    "posY": 1.03,
+    "posZ": 26.9,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Red Level label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_red.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_red.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00038",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -7.5,
+    "posY": 1.5,
+    "posZ": 25.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Red Level",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.86,
+    "g": 0.1,
+    "b": 0.09
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 1
+  },
+  {
+   "GUID": "a00039",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 20,
+    "posY": 1.03,
+    "posZ": 27.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 5,
+    "scaleY": 1,
+    "scaleZ": 5
+   },
+   "Nickname": "Yellow board zone",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_yellow.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_yellow.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0003a",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 27,
+    "posY": 1.03,
+    "posZ": 26.9,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Yellow Life label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_yellow.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_yellow.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0003b",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 27,
+    "posY": 1.5,
+    "posZ": 25.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Yellow Life",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a0003c",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 27,
+    "posY": 1.03,
+    "posZ": 30.4,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Yellow Focus label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_yellow.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_yellow.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0003d",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 27,
+    "posY": 1.5,
+    "posZ": 29.0,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Yellow Focus",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a0003e",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 12.5,
+    "posY": 1.03,
+    "posZ": 26.9,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Yellow Level label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_yellow.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_yellow.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0003f",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 12.5,
+    "posY": 1.5,
+    "posZ": 25.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Yellow Level",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.9,
+    "g": 0.88,
+    "b": 0.1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 1
+  },
+  {
+   "GUID": "a00040",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -20,
+    "posY": 1.03,
+    "posZ": -27.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 5,
+    "scaleY": 1,
+    "scaleZ": 5
+   },
+   "Nickname": "Green board zone",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_green.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_green.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00041",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -27,
+    "posY": 1.03,
+    "posZ": -26.9,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Green Life label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_green.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_green.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00042",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -27,
+    "posY": 1.5,
+    "posZ": -25.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Green Life",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a00043",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -27,
+    "posY": 1.03,
+    "posZ": -30.4,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Green Focus label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_green.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_green.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00044",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -27,
+    "posY": 1.5,
+    "posZ": -29.0,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Green Focus",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a00045",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -12.5,
+    "posY": 1.03,
+    "posZ": -26.9,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Green Level label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_green.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_green.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00046",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -12.5,
+    "posY": 1.5,
+    "posZ": -25.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Green Level",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.19,
+    "g": 0.7,
+    "b": 0.17
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 1
+  },
+  {
+   "GUID": "a00047",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 0,
+    "posY": 1.03,
+    "posZ": -27.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 5,
+    "scaleY": 1,
+    "scaleZ": 5
+   },
+   "Nickname": "Blue board zone",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_blue.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_blue.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00048",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -7,
+    "posY": 1.03,
+    "posZ": -26.9,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Blue Life label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_blue.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_blue.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00049",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -7,
+    "posY": 1.5,
+    "posZ": -25.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Blue Life",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a0004a",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -7,
+    "posY": 1.03,
+    "posZ": -30.4,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Blue Focus label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_blue.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_blue.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0004b",
+   "Name": "Counter",
+   "Transform": {
+    "posX": -7,
+    "posY": 1.5,
+    "posZ": -29.0,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Blue Focus",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a0004c",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 7.5,
+    "posY": 1.03,
+    "posZ": -26.9,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Blue Level label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_blue.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_blue.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0004d",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 7.5,
+    "posY": 1.5,
+    "posZ": -25.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Blue Level",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.12,
+    "g": 0.53,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 1
+  },
+  {
+   "GUID": "a0004e",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 20,
+    "posY": 1.03,
+    "posZ": -27.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 5,
+    "scaleY": 1,
+    "scaleZ": 5
+   },
+   "Nickname": "Pink board zone",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_pink.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_snap_pink.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0004f",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 13,
+    "posY": 1.03,
+    "posZ": -26.9,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Pink Life label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_pink.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_life_pink.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00050",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 13,
+    "posY": 1.5,
+    "posZ": -25.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Pink Life",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a00051",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 13,
+    "posY": 1.03,
+    "posZ": -30.4,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Pink Focus label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_pink.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_focus_pink.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00052",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 13,
+    "posY": 1.5,
+    "posZ": -29.0,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Pink Focus",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 0
+  },
+  {
+   "GUID": "a00053",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 27.5,
+    "posY": 1.03,
+    "posZ": -26.9,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.8,
+    "scaleY": 1,
+    "scaleZ": 0.3
+   },
+   "Nickname": "Pink Level label",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_pink.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_label_level_pink.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00054",
+   "Name": "Counter",
+   "Transform": {
+    "posX": 27.5,
+    "posY": 1.5,
+    "posZ": -25.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "scaleZ": 1
+   },
+   "Nickname": "Pink Level",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.96,
+    "g": 0.44,
+    "b": 0.81
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "Value": 1
+  },
+  {
+   "GUID": "a00055",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 0,
+    "posY": 1.0,
+    "posZ": -35,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 61.5,
+    "scaleY": 1,
+    "scaleZ": 13.5
+   },
+   "Nickname": "Player Shelf",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_shelf.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_shelf.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00056",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 0,
+    "posY": 1.0,
+    "posZ": 35,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 61.5,
+    "scaleY": 1,
+    "scaleZ": 13.5
+   },
+   "Nickname": "Player Shelf",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_shelf.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_shelf.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00057",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 46.8,
+    "posY": 1.0,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 13.5,
+    "scaleY": 1,
+    "scaleZ": 22.5
+   },
+   "Nickname": "Side Shelf",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_shelf.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_shelf.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00058",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -46.8,
+    "posY": 1.0,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 13.5,
+    "scaleY": 1,
+    "scaleZ": 22.5
+   },
+   "Nickname": "Side Shelf",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": false,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_shelf.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_shelf.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a00059",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 41.3,
+    "posY": 1.2,
+    "posZ": -10,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 4.7,
+    "scaleY": 1,
+    "scaleZ": 4.7
+   },
+   "Nickname": "Character Board 1",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board1_front.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board1_back.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0005a",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 53.3,
+    "posY": 1.2,
+    "posZ": -10,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 4.7,
+    "scaleY": 1,
+    "scaleZ": 4.7
+   },
+   "Nickname": "Character Board 2",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board2_front.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board2_back.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0005b",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 41.3,
+    "posY": 1.2,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 4.7,
+    "scaleY": 1,
+    "scaleZ": 4.7
+   },
+   "Nickname": "Character Board 3",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board3_front.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board3_back.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0005c",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 53.3,
+    "posY": 1.2,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 4.7,
+    "scaleY": 1,
+    "scaleZ": 4.7
+   },
+   "Nickname": "Character Board 4",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board4_front.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board4_back.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0005d",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 41.3,
+    "posY": 1.2,
+    "posZ": 10,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 4.7,
+    "scaleY": 1,
+    "scaleZ": 4.7
+   },
+   "Nickname": "Character Board 5",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board5_front.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_board5_back.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0005e",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 53.3,
+    "posY": 1.2,
+    "posZ": 10,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 4.7,
+    "scaleY": 1,
+    "scaleZ": 4.7
+   },
+   "Nickname": "GM Plate",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_gm_plate.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_gm_plate.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "a0005f",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": -14,
+    "posY": 1.0,
+    "posZ": 1.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 7.4,
+    "scaleY": 1,
+    "scaleZ": 11.1
+   },
+   "Nickname": "Map of ARK-9",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_map.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_map.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 0,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "d15c01",
+   "Name": "Custom_Tile",
+   "Transform": {
+    "posX": 6,
+    "posY": 1.0,
+    "posZ": 4,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 4.5,
+    "scaleY": 1,
+    "scaleZ": 4.5
+   },
+   "Nickname": "Game Disc (Alert)",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_disc.png",
+    "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_disc_back.png",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomTile": {
+     "Type": 2,
+     "Thickness": 0.1,
+     "Stackable": false,
+     "Stretch": true
+    }
+   }
+  },
+  {
+   "GUID": "ae3d01",
+   "Name": "Custom_Token",
+   "Transform": {
+    "posX": 6,
+    "posY": 1.2,
+    "posZ": 4,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1.8,
+    "scaleY": 1,
+    "scaleZ": 1.8
+   },
+   "Nickname": "Alert Spinner",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": true,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomImage": {
+    "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_needle.png",
+    "ImageSecondaryURL": "",
+    "ImageScalar": 1.0,
+    "WidthScale": 0.0,
+    "CustomToken": {
+     "Thickness": 0.05,
+     "MergeDistancePixels": 15.0,
+     "StandUp": false,
+     "Stackable": false
+    }
+   }
+  },
+  {
+   "GUID": "a00062",
+   "Name": "DeckCustom",
+   "Transform": {
+    "posX": 16,
+    "posY": 1.5,
+    "posZ": 4,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 180,
+    "scaleX": 1.5,
+    "scaleY": 1,
+    "scaleZ": 1.5
+   },
+   "Nickname": "MemoryCards",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomDeck": {
+    "1": {
+     "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+     "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+     "NumWidth": 7,
+     "NumHeight": 5,
+     "BackIsHidden": true,
+     "UniqueBack": false,
+     "Type": 0
+    }
+   },
+   "DeckIDs": [
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132
+   ],
+   "ContainedObjects": [
+    {
+     "GUID": "a00063",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 100,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00064",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 101,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00065",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 102,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00066",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 103,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00067",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 104,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00068",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 105,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00069",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 106,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0006a",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 107,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0006b",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 108,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0006c",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 109,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0006d",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 110,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0006e",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 111,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0006f",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 112,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00070",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 113,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00071",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 114,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00072",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 115,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00073",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 116,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00074",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 117,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00075",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 118,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00076",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 119,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00077",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 120,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00078",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 121,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00079",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 122,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0007a",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 123,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0007b",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 124,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0007c",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 125,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0007d",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 126,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0007e",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 127,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a0007f",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 128,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00080",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 129,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00081",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 130,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00082",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 131,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    },
+    {
+     "GUID": "a00083",
+     "Name": "CardCustom",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 180,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+     },
+     "Nickname": "",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CardID": 132,
+     "CustomDeck": {
+      "1": {
+       "FaceURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_memorycards_sheet.png",
+       "BackURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_card_back.png",
+       "NumWidth": 7,
+       "NumHeight": 5,
+       "BackIsHidden": true,
+       "UniqueBack": false,
+       "Type": 0
+      }
+     }
+    }
+   ]
+  },
+  {
+   "GUID": "a00084",
+   "Name": "Custom_PDF",
+   "Transform": {
+    "posX": -46.8,
+    "posY": 1.2,
+    "posZ": -13,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 2.4,
+    "scaleY": 1,
+    "scaleZ": 2.4
+   },
+   "Nickname": "SSM Rulebook (GM)",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomPDF": {
+    "PDFUrl": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/PDF/ssm_rulebook.pdf",
+    "PDFPassword": "",
+    "PDFPage": 0,
+    "PDFPageOffset": 0
+   }
+  },
+  {
+   "GUID": "a00085",
+   "Name": "Custom_PDF",
+   "Transform": {
+    "posX": -46.8,
+    "posY": 1.2,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 2.4,
+    "scaleY": 1,
+    "scaleZ": 2.4
+   },
+   "Nickname": "Secret Files (GM)",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomPDF": {
+    "PDFUrl": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/PDF/ssm_secret_files.pdf",
+    "PDFPassword": "",
+    "PDFPage": 0,
+    "PDFPageOffset": 0
+   }
+  },
+  {
+   "GUID": "a00086",
+   "Name": "Custom_PDF",
+   "Transform": {
+    "posX": -46.8,
+    "posY": 1.2,
+    "posZ": 13,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 2.4,
+    "scaleY": 1,
+    "scaleZ": 2.4
+   },
+   "Nickname": "MemoryCore Manual",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 1,
+    "g": 1,
+    "b": 1
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "CustomPDF": {
+    "PDFUrl": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/PDF/memorycore_manual.pdf",
+    "PDFPassword": "",
+    "PDFPage": 0,
+    "PDFPageOffset": 0
+   }
+  },
+  {
+   "GUID": "a00088",
+   "Name": "Infinite_Bag",
+   "Transform": {
+    "posX": -3,
+    "posY": 1.5,
+    "posZ": -3.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.7,
+    "scaleY": 0.7,
+    "scaleZ": 0.7
+   },
+   "Nickname": "Ration (infinite)",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.15,
+    "g": 0.45,
+    "b": 0.2
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "ContainedObjects": [
+    {
+     "GUID": "a00087",
+     "Name": "Custom_Tile",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 0,
+      "scaleX": 0.5,
+      "scaleY": 1,
+      "scaleZ": 0.5
+     },
+     "Nickname": "Ration",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CustomImage": {
+      "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_token_ration.png",
+      "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_token_ration.png",
+      "ImageScalar": 1.0,
+      "WidthScale": 0.0,
+      "CustomTile": {
+       "Type": 0,
+       "Thickness": 0.1,
+       "Stackable": false,
+       "Stretch": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "GUID": "a0008a",
+   "Name": "Infinite_Bag",
+   "Transform": {
+    "posX": -3,
+    "posY": 1.5,
+    "posZ": 1.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.7,
+    "scaleY": 0.7,
+    "scaleZ": 0.7
+   },
+   "Nickname": "Diazepam (infinite)",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.15,
+    "g": 0.45,
+    "b": 0.2
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "ContainedObjects": [
+    {
+     "GUID": "a00089",
+     "Name": "Custom_Tile",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 0,
+      "scaleX": 0.5,
+      "scaleY": 1,
+      "scaleZ": 0.5
+     },
+     "Nickname": "Diazepam",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CustomImage": {
+      "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_token_diazepam.png",
+      "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_token_diazepam.png",
+      "ImageScalar": 1.0,
+      "WidthScale": 0.0,
+      "CustomTile": {
+       "Type": 0,
+       "Thickness": 0.1,
+       "Stackable": false,
+       "Stretch": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "GUID": "a0008c",
+   "Name": "Infinite_Bag",
+   "Transform": {
+    "posX": -3,
+    "posY": 1.5,
+    "posZ": 6.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.7,
+    "scaleY": 0.7,
+    "scaleZ": 0.7
+   },
+   "Nickname": "Medicine (infinite)",
+   "Description": "",
+   "GMNotes": "",
+   "ColorDiffuse": {
+    "r": 0.15,
+    "g": 0.45,
+    "b": 0.2
+   },
+   "Locked": false,
+   "Grid": true,
+   "Snap": true,
+   "Autoraise": true,
+   "Sticky": true,
+   "Tooltip": true,
+   "Hands": false,
+   "LuaScript": "",
+   "LuaScriptState": "",
+   "XmlUI": "",
+   "ContainedObjects": [
+    {
+     "GUID": "a0008b",
+     "Name": "Custom_Tile",
+     "Transform": {
+      "posX": 0,
+      "posY": 0,
+      "posZ": 0,
+      "rotX": 0,
+      "rotY": 180,
+      "rotZ": 0,
+      "scaleX": 0.5,
+      "scaleY": 1,
+      "scaleZ": 0.5
+     },
+     "Nickname": "Medicine",
+     "Description": "",
+     "GMNotes": "",
+     "ColorDiffuse": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+     },
+     "Locked": false,
+     "Grid": true,
+     "Snap": true,
+     "Autoraise": true,
+     "Sticky": true,
+     "Tooltip": true,
+     "Hands": false,
+     "LuaScript": "",
+     "LuaScriptState": "",
+     "XmlUI": "",
+     "CustomImage": {
+      "ImageURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_token_medicine.png",
+      "ImageSecondaryURL": "file:///C:/Users/Dan/Documents/My Games/Tabletop Simulator/Mods/Images/ssm_token_medicine.png",
+      "ImageScalar": 1.0,
+      "WidthScale": 0.0,
+      "CustomTile": {
+       "Type": 0,
+       "Thickness": 0.1,
+       "Stackable": false,
+       "Stretch": true
+      }
+     }
+    }
+   ]
+  }
+ ]
+}
